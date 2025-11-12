@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Agent, Message } from '../../types';
-import { startChatSession, streamMessage, getSuggestedReplies } from '../../services/geminiService';
-import { Chat } from '@google/genai';
+import { streamChat, getSuggestedReplies } from '../../services/geminiService';
 import SearchIcon from '../icons/SearchIcon';
 import UserIcon from '../icons/UserIcon';
 
@@ -16,12 +15,9 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
   const [currentInput, setCurrentInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [suggestedReplies, setSuggestedReplies] = useState<string[]>([]);
-  const chatSessionRef = useRef<Chat | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    chatSessionRef.current = startChatSession(agent.systemPrompt);
-    // Add an initial greeting message from the AI
     setMessages([{ id: 'init', sender: 'ai', text: `你好，我是${agent.name}。有什么可以帮你的吗？` }]);
     
     if (initialMessage) {
@@ -36,11 +32,13 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
   useEffect(scrollToBottom, [messages, isLoading]);
 
   const handleSendMessage = async (messageText: string, isInitial = false) => {
-    if (messageText.trim() === '' || isLoading || !chatSessionRef.current) return;
+    if (messageText.trim() === '' || isLoading) return;
 
     setIsLoading(true);
     setSuggestedReplies([]);
     const newUserMessage: Message = { id: Date.now().toString(), sender: 'user', text: messageText };
+    
+    const historyForApi = [...messages];
     setMessages(prev => [...prev, newUserMessage]);
     
     if (!isInitial) {
@@ -48,26 +46,23 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
     }
 
     try {
-      const stream = await streamMessage(chatSessionRef.current, messageText);
+      const stream = streamChat(historyForApi, agent.systemPrompt, messageText);
       
       let aiResponseText = '';
       const aiMessageId = (Date.now() + 1).toString();
       
-      // Add a placeholder for the AI response
       setMessages(prev => [...prev, { id: aiMessageId, sender: 'ai', text: '...' }]);
 
       for await (const chunk of stream) {
-        aiResponseText += chunk.text;
-        // Update the placeholder with streamed text
+        aiResponseText += chunk;
         setMessages(prev => prev.map(msg => msg.id === aiMessageId ? { ...msg, text: aiResponseText + '...' } : msg));
       }
       
       const finalAiMessage: Message = { id: aiMessageId, sender: 'ai', text: aiResponseText };
       setMessages(prev => prev.map(msg => msg.id === aiMessageId ? finalAiMessage : msg));
 
-      // Fetch suggested replies based on the new conversation history
-      const newHistory = [...messages, newUserMessage, finalAiMessage];
-      const replies = await getSuggestedReplies(newHistory);
+      const finalHistory = [...historyForApi, newUserMessage, finalAiMessage];
+      const replies = await getSuggestedReplies(finalHistory);
       setSuggestedReplies(replies);
 
     } catch (error)

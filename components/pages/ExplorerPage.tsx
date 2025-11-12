@@ -104,6 +104,7 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
         ...editingAgent,
         systemPrompt: tempPrompt,
         imageUrl: tempImageUrl,
+        avatarUrl: tempImageUrl,
       });
       handleCloseSettings();
     }
