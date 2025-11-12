@@ -104,7 +104,7 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
         ...editingAgent,
         systemPrompt: tempPrompt,
         imageUrl: tempImageUrl,
-        avatarUrl: tempImageUrl,
+        avatarUrl: tempImageUrl, // Sync avatar with the new background image
       });
       handleCloseSettings();
     }
