@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Agent, Message } from '../../types';
 import { startChatSession, streamMessage, getSuggestedReplies } from '../../services/geminiService';
 import { Chat } from '@google/genai';
@@ -18,16 +18,12 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
   const [suggestedReplies, setSuggestedReplies] = useState<string[]>([]);
   const chatSessionRef = useRef<Chat | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
+  const initialMessageRef = useRef(initialMessage);
+  
+  // Update ref when initialMessage prop changes
   useEffect(() => {
-    chatSessionRef.current = startChatSession(agent.systemPrompt);
-    // Add an initial greeting message from the AI
-    setMessages([{ id: 'init', sender: 'ai', text: `你好，我是${agent.name}。有什么可以帮你的吗？` }]);
-    
-    if (initialMessage) {
-        handleSendMessage(initialMessage, true);
-    }
-  }, [agent, initialMessage]);
+    initialMessageRef.current = initialMessage;
+  }, [initialMessage]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -63,12 +59,17 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
       }
       
       const finalAiMessage: Message = { id: aiMessageId, sender: 'ai', text: aiResponseText };
-      setMessages(prev => prev.map(msg => msg.id === aiMessageId ? finalAiMessage : msg));
-
-      // Fetch suggested replies based on the new conversation history
-      const newHistory = [...messages, newUserMessage, finalAiMessage];
-      const replies = await getSuggestedReplies(newHistory);
-      setSuggestedReplies(replies);
+      setMessages(prev => {
+        const updated = prev.map(msg => msg.id === aiMessageId ? finalAiMessage : msg);
+        // Fetch suggested replies based on the new conversation history
+        const newHistory = [...updated.filter(msg => msg.id !== aiMessageId && msg.id !== 'init'), newUserMessage, finalAiMessage];
+        getSuggestedReplies(newHistory).then(replies => {
+          setSuggestedReplies(replies);
+        }).catch(err => {
+          console.error("Error fetching suggested replies:", err);
+        });
+        return updated;
+      });
 
     } catch (error)
  {
@@ -88,6 +89,38 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
   const handleSuggestedReplyClick = (reply: string) => {
     handleSendMessage(reply);
   };
+
+  useEffect(() => {
+    // Reset state when agent changes
+    setMessages([]);
+    setSuggestedReplies([]);
+    setCurrentInput('');
+    setIsLoading(false);
+    
+    try {
+      chatSessionRef.current = startChatSession(agent.systemPrompt);
+      // Add an initial greeting message from the AI
+      setMessages([{ id: 'init', sender: 'ai', text: `你好，我是${agent.name}。有什么可以帮你的吗？` }]);
+      
+      // Handle initial message if provided
+      const initialMsg = initialMessageRef.current;
+      if (initialMsg) {
+        initialMessageRef.current = undefined; // Clear after first use
+        // Use setTimeout to ensure chat session is initialized
+        setTimeout(() => {
+          handleSendMessage(initialMsg, true);
+        }, 100);
+      }
+    } catch (error) {
+      console.error("Failed to initialize chat session:", error);
+      setMessages([{ 
+        id: 'init', 
+        sender: 'ai', 
+        text: `你好，我是${agent.name}。注意：需要设置 GEMINI_API_KEY 环境变量才能使用AI聊天功能。` 
+      }]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [agent.id]); // Only re-run when agent changes
 
   return (
     <div className="relative flex h-screen bg-[#F0F2F5] dark:bg-black">

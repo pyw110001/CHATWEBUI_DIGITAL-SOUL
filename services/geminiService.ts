@@ -1,13 +1,31 @@
 import { GoogleGenAI, Chat, Type } from "@google/genai";
 import { Message, Agent } from '../types';
 
-if (!process.env.API_KEY) {
-  throw new Error("API_KEY environment variable not set");
+const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+
+// Debug: Check if API key is loaded (only show first few characters for security)
+if (!apiKey) {
+  console.warn("API_KEY or GEMINI_API_KEY environment variable not set. Some features may not work.");
+} else {
+  // Only log first 10 characters for debugging
+  const maskedKey = apiKey.length > 10 ? apiKey.substring(0, 10) + '...' : '***';
+  console.log("Gemini API Key loaded:", maskedKey, "(length:", apiKey.length + ")");
+  
+  // Check for common issues
+  if (apiKey.includes('YOUR_API_KEY') || apiKey.includes('your_api_key')) {
+    console.error("⚠️ 请将 .env.local 文件中的 YOUR_API_KEY_HERE 替换为你的实际 Gemini API Key!");
+  }
+  if (apiKey.trim() !== apiKey) {
+    console.warn("⚠️ API Key 前后可能有空格，请检查 .env.local 文件");
+  }
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = apiKey ? new GoogleGenAI({ apiKey: apiKey.trim() }) : null;
 
 export function startChatSession(systemPrompt: string): Chat {
+  if (!ai) {
+    throw new Error("Gemini API is not initialized. Please set GEMINI_API_KEY environment variable.");
+  }
   const chat = ai.chats.create({
     model: 'gemini-2.5-flash',
     config: {
@@ -22,6 +40,9 @@ export async function streamMessage(chat: Chat, message: string) {
 }
 
 export async function getSuggestedReplies(history: Message[]): Promise<string[]> {
+  if (!ai) {
+    return [];
+  }
   const conversationHistory = history.map(msg => `${msg.sender}: ${msg.text}`).join('\n');
 
   try {
@@ -60,6 +81,14 @@ export async function getSuggestedReplies(history: Message[]): Promise<string[]>
 
 
 export async function createAgentProfile(initialPrompt: string): Promise<Pick<Agent, 'name' | 'description' | 'systemPrompt'>> {
+  if (!ai) {
+    // Fallback profile when API is not available
+    return {
+      name: "新智能体",
+      description: initialPrompt,
+      systemPrompt: "你是一个乐于助人的AI助手。",
+    };
+  }
   try {
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
