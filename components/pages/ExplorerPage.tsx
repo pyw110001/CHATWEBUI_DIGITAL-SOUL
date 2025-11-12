@@ -40,11 +40,11 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
     );
   }, [searchTerm, agents]);
   
-  const categories = useMemo(() => ['All', ...new Set(agents.map(a => a.category))], [agents]);
-  const [activeCategory, setActiveCategory] = useState('All');
+  const categories = useMemo(() => ['全部', ...new Set(agents.map(a => a.category))], [agents]);
+  const [activeCategory, setActiveCategory] = useState('全部');
   
   const categoryFilteredAgents = useMemo(() => {
-    if (activeCategory === 'All') return filteredAgents;
+    if (activeCategory === '全部') return filteredAgents;
     return filteredAgents.filter(agent => agent.category === activeCategory);
   }, [activeCategory, filteredAgents]);
 
@@ -74,7 +74,7 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
       const newAgent: Agent = {
         id: `agent-${Date.now()}`,
         ...profile,
-        category: 'New',
+        category: '新智能体',
         avatarUrl: `https://picsum.photos/seed/${Date.now()}/100/100`,
         imageUrl: `https://picsum.photos/seed/${Date.now()}_bg/600/800`,
       };
@@ -140,7 +140,7 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
             ) : (
               <AppleLogoIcon className="h-6 w-6" />
             )}
-            <h1 className="text-xl font-semibold">Agent</h1>
+            <h1 className="text-xl font-semibold">智能体</h1>
           </div>
           <div className="flex items-center space-x-4">
             <button onClick={() => setIsSearchVisible(!isSearchVisible)} className="p-2 rounded-full hover:bg-white/10">
@@ -169,13 +169,13 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
                         }}
                         className="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-zinc-600 transition-colors"
                     >
-                        Change Logo
+                        更换标志
                     </button>
                     <button
                         onClick={onRestart}
                         className="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-zinc-600 transition-colors"
                     >
-                        Restart Application
+                        重新启动
                     </button>
                 </div>
               )}
@@ -185,23 +185,23 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
 
         <main className="py-10">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Explore AI Agents</h2>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">探索AI智能体</h2>
             <form onSubmit={handleQuickChatSubmit} className="mt-6 max-w-xl mx-auto">
               <input
                 type="text"
-                placeholder="Start a new chat with a custom agent..."
+                placeholder="与自定义智能体开始新的聊天..."
                 value={quickChatInput}
                 onChange={(e) => setQuickChatInput(e.target.value)}
                 disabled={isCreatingAgent}
                 className="w-full bg-white/10 border border-white/20 rounded-full py-3 px-6 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
-              {isCreatingAgent && <p className="text-sm text-purple-300 mt-2">Creating your new agent...</p>}
+              {isCreatingAgent && <p className="text-sm text-purple-300 mt-2">正在创建您的新智能体...</p>}
             </form>
              {isSearchVisible && (
               <div className="mt-6 max-w-md mx-auto">
                 <input
                   type="text"
-                  placeholder="Search agents..."
+                  placeholder="搜索智能体..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full bg-white/10 border border-white/20 rounded-full py-2 px-5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -234,9 +234,9 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
       {editingAgent && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50" onClick={handleCloseSettings}>
           <div className="bg-zinc-800 rounded-lg shadow-xl p-6 w-full max-w-lg text-white" onClick={(e) => e.stopPropagation()}>
-            <h2 className="text-xl font-semibold mb-4">Edit Agent: {editingAgent.name}</h2>
+            <h2 className="text-xl font-semibold mb-4">编辑智能体: {editingAgent.name}</h2>
             <div className="mb-4">
-              <label htmlFor="systemPrompt" className="block text-sm font-medium text-gray-300 mb-2">System Prompt</label>
+              <label htmlFor="systemPrompt" className="block text-sm font-medium text-gray-300 mb-2">系统提示</label>
               <textarea
                 id="systemPrompt"
                 rows={6}
@@ -246,7 +246,7 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
               />
             </div>
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-300 mb-2">Chat Background Image</label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">聊天背景图片</label>
               <input
                   type="file"
                   id="imageUrl"
@@ -256,7 +256,7 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
               />
               <div className="flex items-center gap-4">
                   <label htmlFor="imageUrl" className="cursor-pointer px-4 py-2 rounded-md text-white bg-zinc-600 hover:bg-zinc-500 transition-colors">
-                      Upload Image
+                      上传图片
                   </label>
                   {tempImageUrl && (
                       <img src={tempImageUrl} alt="Background Preview" className="w-20 h-12 object-cover rounded-md border border-zinc-600" />
@@ -265,10 +265,10 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
             </div>
             <div className="flex justify-end space-x-4">
               <button onClick={handleCloseSettings} className="px-4 py-2 rounded-md text-gray-200 bg-zinc-600 hover:bg-zinc-500 transition-colors">
-                Cancel
+                取消
               </button>
               <button onClick={handleSaveSettings} className="px-4 py-2 rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors">
-                Save Changes
+                保存更改
               </button>
             </div>
           </div>

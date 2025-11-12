@@ -1,5 +1,5 @@
 {
-  "name": "AI Agent Chat",
-  "description": "A web-based chat application that allows users to interact with various AI agents, featuring a login page, an agent discovery explorer, and an immersive chat interface powered by the Gemini API.",
+  "name": "AI 智能体聊天",
+  "description": "一个基于Web的聊天应用程序，允许用户与各种AI智能体互动，具有登录页面、智能体发现浏览器和由Gemini API驱动的沉浸式聊天界面。",
   "requestFramePermissions": []
 }

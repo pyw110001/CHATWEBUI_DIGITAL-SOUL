@@ -27,9 +27,9 @@ export async function getSuggestedReplies(history: Message[]): Promise<string[]>
   try {
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: `Based on the following conversation, suggest 3 short, relevant, and engaging replies for the user.
+      contents: `根据以下对话，为用户建议3个简短、相关且引人入胜的回复。
       
-      Conversation:
+      对话:
       ${conversationHistory}
       `,
       config: {
@@ -63,11 +63,11 @@ export async function createAgentProfile(initialPrompt: string): Promise<Pick<Ag
   try {
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: `Based on the user's initial request, create a persona for an AI agent. The persona should include a short, catchy name, a one-sentence description, and a system prompt that defines its role and personality.
+      contents: `根据用户的初始请求，为AI智能体创建一个角色。该角色应包括一个简短、引人注目的中文名称、一句中文描述以及一个定义其角色和个性的系统提示。
       
-      User Request: "${initialPrompt}"
+      用户请求: "${initialPrompt}"
       
-      Provide the output in JSON format.`,
+      请以JSON格式提供输出。`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -88,9 +88,9 @@ export async function createAgentProfile(initialPrompt: string): Promise<Pick<Ag
     console.error("Error creating agent profile:", error);
     // Fallback profile
     return {
-      name: "New Agent",
+      name: "新智能体",
       description: initialPrompt,
-      systemPrompt: "You are a helpful AI assistant.",
+      systemPrompt: "你是一个乐于助人的AI助手。",
     };
   }
 }

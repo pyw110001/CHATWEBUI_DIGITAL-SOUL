@@ -96,7 +96,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
           <button onClick={onBack} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
           </button>
-          <span className="ml-4 font-semibold text-lg dark:text-white">Chat</span>
+          <span className="ml-4 font-semibold text-lg dark:text-white">聊天</span>
           <div className="ml-auto flex items-center space-x-2">
               <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800"><SearchIcon className="h-5 w-5 text-gray-600 dark:text-gray-300" /></button>
               <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800"><UserIcon className="h-5 w-5 text-gray-600 dark:text-gray-300" /></button>
@@ -119,7 +119,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
         <div className="p-4 border-t dark:border-zinc-700">
             {suggestedReplies.length > 0 && (
                 <div className="mb-2">
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Suggested Reply</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">建议回复</p>
                     <div className="flex flex-wrap gap-2">
                         {suggestedReplies.map((reply, i) => (
                             <button key={i} onClick={() => handleSuggestedReplyClick(reply)} className="px-3 py-1.5 bg-gray-200 dark:bg-zinc-700 dark:text-gray-200 text-gray-700 rounded-full text-sm hover:bg-gray-300 dark:hover:bg-zinc-600 transition-colors">
@@ -134,12 +134,12 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
                   type="text"
                   value={currentInput}
                   onChange={(e) => setCurrentInput(e.target.value)}
-                  placeholder="Tex text rapp"
+                  placeholder="输入文本..."
                   className="flex-1 w-full px-4 py-2 bg-gray-100 dark:bg-zinc-800 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
                   disabled={isLoading}
                 />
                 <button type="submit" className="px-4 py-2 bg-black dark:bg-white dark:text-black text-white font-semibold rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors disabled:opacity-50" disabled={isLoading || currentInput.trim() === ''}>
-                    Send
+                    发送
                 </button>
             </form>
         </div>
