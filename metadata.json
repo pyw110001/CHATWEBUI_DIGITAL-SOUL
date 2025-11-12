@@ -1,0 +1,5 @@
+{
+  "name": "AI Agent Chat",
+  "description": "A web-based chat application that allows users to interact with various AI agents, featuring a login page, an agent discovery explorer, and an immersive chat interface powered by the Gemini API.",
+  "requestFramePermissions": []
+}
