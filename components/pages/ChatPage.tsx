@@ -18,6 +18,13 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
   const chatSessionRef = useRef<ChatSession | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const initialMessageRef = useRef(initialMessage);
+  const messageIdCounterRef = useRef(0);
+  
+  // 生成唯一的消息 ID
+  const generateMessageId = useCallback(() => {
+    messageIdCounterRef.current += 1;
+    return `msg-${Date.now()}-${messageIdCounterRef.current}-${Math.random().toString(36).substr(2, 9)}`;
+  }, []);
   
   // Update ref when initialMessage prop changes
   useEffect(() => {
@@ -35,7 +42,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
 
     setIsLoading(true);
     setSuggestedReplies([]);
-    const newUserMessage: Message = { id: Date.now().toString(), sender: 'user', text: messageText };
+    const newUserMessage: Message = { id: generateMessageId(), sender: 'user', text: messageText };
     setMessages(prev => [...prev, newUserMessage]);
     
     if (!isInitial) {
@@ -46,7 +53,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
       const stream = await streamMessage(chatSessionRef.current, messageText);
       
       let aiResponseText = '';
-      const aiMessageId = (Date.now() + 1).toString();
+      const aiMessageId = generateMessageId();
       
       // Add a placeholder for the AI response
       setMessages(prev => [...prev, { id: aiMessageId, sender: 'ai', text: '...' }]);
@@ -73,7 +80,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
     } catch (error)
  {
       console.error("Failed to send message:", error);
-      const errorMessage: Message = { id: 'error', sender: 'ai', text: '抱歉，我好像遇到了一些问题。请稍后再试。' };
+      const errorMessage: Message = { id: generateMessageId(), sender: 'ai', text: '抱歉，我好像遇到了一些问题。请稍后再试。' };
       setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
@@ -153,8 +160,8 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
                 <div className="mb-2">
                     <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">建议回复</p>
                     <div className="flex flex-wrap gap-2">
-                        {suggestedReplies.map((reply, i) => (
-                            <button key={i} onClick={() => handleSuggestedReplyClick(reply)} className="px-3 py-1.5 bg-gray-200 dark:bg-zinc-700 dark:text-gray-200 text-gray-700 rounded-full text-sm hover:bg-gray-300 dark:hover:bg-zinc-600 transition-colors">
+                        {suggestedReplies.map((reply) => (
+                            <button key={`reply-${reply}`} onClick={() => handleSuggestedReplyClick(reply)} className="px-3 py-1.5 bg-gray-200 dark:bg-zinc-700 dark:text-gray-200 text-gray-700 rounded-full text-sm hover:bg-gray-300 dark:hover:bg-zinc-600 transition-colors">
                                 {reply}
                             </button>
                         ))}

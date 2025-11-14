@@ -29,9 +29,9 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, logoUrl }) => {
             ) : (
                 <AppleLogoIcon className="h-16 w-16 mx-auto mb-6 text-white/80" />
             )}
-            <h1 className="text-4xl font-bold tracking-tight">欢迎来到数灵智能体世界</h1>
-            <p className="mt-4 text-lg text-white/70">
-                与AI智能体开启对话，你的下一个伟大想法，从聊天开始
+            <h1 className="text-3xl font-bold tracking-tight">数字文娱IP角色塑造AI智能体平台</h1>
+            <p className="mt-4 text-base text-white/70">
+            提供智能体中台服务,创新“虚实共生”的数字文娱体验模式
             </p>
         </div>
       </div>
