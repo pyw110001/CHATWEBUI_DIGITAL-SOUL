@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Agent, Message } from '../../types';
-import { startChatSession, streamMessage, getSuggestedReplies } from '../../services/geminiService';
-import { Chat } from '@google/genai';
+import { startChatSession, streamMessage, getSuggestedReplies, ChatSession } from '../../services/chatglmService';
 import SearchIcon from '../icons/SearchIcon';
 import UserIcon from '../icons/UserIcon';
 
@@ -16,7 +15,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
   const [currentInput, setCurrentInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [suggestedReplies, setSuggestedReplies] = useState<string[]>([]);
-  const chatSessionRef = useRef<Chat | null>(null);
+  const chatSessionRef = useRef<ChatSession | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const initialMessageRef = useRef(initialMessage);
   
@@ -55,7 +54,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
       for await (const chunk of stream) {
         aiResponseText += chunk.text;
         // Update the placeholder with streamed text
-        setMessages(prev => prev.map(msg => msg.id === aiMessageId ? { ...msg, text: aiResponseText + '...' } : msg));
+        setMessages(prev => prev.map(msg => msg.id === aiMessageId ? { ...msg, text: aiResponseText } : msg));
       }
       
       const finalAiMessage: Message = { id: aiMessageId, sender: 'ai', text: aiResponseText };
@@ -116,7 +115,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
       setMessages([{ 
         id: 'init', 
         sender: 'ai', 
-        text: `你好，我是${agent.name}。注意：需要设置 GEMINI_API_KEY 环境变量才能使用AI聊天功能。` 
+        text: `你好，我是${agent.name}。注意：需要启动Python后端服务并配置CHATGLM_API_KEY才能使用AI聊天功能。` 
       }]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

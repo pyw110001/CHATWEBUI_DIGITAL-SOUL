@@ -3,7 +3,7 @@ import { Agent } from '../../types';
 import AgentCard from '../AgentCard';
 import AppleLogoIcon from '../icons/AppleLogoIcon';
 import SearchIcon from '../icons/SearchIcon';
-import { createAgentProfile } from '../../services/geminiService';
+import { createAgentProfile } from '../../services/chatglmService';
 
 interface ExplorerPageProps {
   agents: Agent[];
