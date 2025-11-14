@@ -19,6 +19,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const initialMessageRef = useRef(initialMessage);
   const messageIdCounterRef = useRef(0);
+  const initializedAgentIdRef = useRef<string | null>(null);
   
   // 生成唯一的消息 ID
   const generateMessageId = useCallback(() => {
@@ -97,34 +98,57 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
   };
 
   useEffect(() => {
+    // Skip if this agent is already initialized
+    if (initializedAgentIdRef.current === agent.id) {
+      return;
+    }
+    
+    // Mark this agent as initialized
+    initializedAgentIdRef.current = agent.id;
+    
     // Reset state when agent changes
     setMessages([]);
     setSuggestedReplies([]);
     setCurrentInput('');
     setIsLoading(false);
     
+    let timeoutId: NodeJS.Timeout | null = null;
+    
     try {
       chatSessionRef.current = startChatSession(agent.systemPrompt);
       // Add an initial greeting message from the AI
-      setMessages([{ id: 'init', sender: 'ai', text: `你好，我是${agent.name}。有什么可以帮你的吗？` }]);
+      const initMessage = { id: 'init', sender: 'ai' as const, text: `你好，我是${agent.name}。有什么可以帮你的吗？` };
+      setMessages([initMessage]);
       
       // Handle initial message if provided
       const initialMsg = initialMessageRef.current;
       if (initialMsg) {
         initialMessageRef.current = undefined; // Clear after first use
         // Use setTimeout to ensure chat session is initialized
-        setTimeout(() => {
-          handleSendMessage(initialMsg, true);
+        timeoutId = setTimeout(() => {
+          if (chatSessionRef.current && initializedAgentIdRef.current === agent.id) {
+            handleSendMessage(initialMsg, true);
+          }
         }, 100);
       }
     } catch (error) {
       console.error("Failed to initialize chat session:", error);
       setMessages([{ 
         id: 'init', 
-        sender: 'ai', 
+        sender: 'ai' as const, 
         text: `你好，我是${agent.name}。注意：需要启动Python后端服务并配置CHATGLM_API_KEY才能使用AI聊天功能。` 
       }]);
     }
+    
+    // Cleanup function to reset flag and clear timeout when agent changes
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      if (initializedAgentIdRef.current === agent.id) {
+        initializedAgentIdRef.current = null;
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agent.id]); // Only re-run when agent changes
 
