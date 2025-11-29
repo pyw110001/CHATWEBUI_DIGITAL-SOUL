@@ -1,0 +1,406 @@
+{
+  "company_profile": {
+    "name_cn": "远东企业集团",
+    "name_en": "Far Eastern Group",
+    "abbreviation": "远东集团 / FEG",
+    "origin_region": "中国台湾",
+    "history_cn": "远东集团以纺织起家，自 1949 年创立远东纺织以来，历经七十余年发展，已成为横跨多领域的多元化企业集团。",
+    "founder": "徐有庠",
+    "chairman": "徐旭东（Douglas Tong Hsu）",
+    "scale": {
+      "approx_assets_twd": 3400000000000,
+      "approx_revenue_twd": 739500000000,
+      "employees": 57000,
+      "subsidiaries_overall": 240,
+      "listed_companies": 10
+    },
+    "business_regions": [
+      "台湾",
+      "中国大陆",
+      "东南亚（越南、新加坡等）",
+      "北美等其他地区"
+    ],
+    "vision": {
+      "cn": "共创美好未来、你我携手同行",
+      "en": "Improving Lives, Shaping a Better Future"
+    },
+    "group_positioning_cn": "以纺织与化纤为基础，发展为横跨石化能源、聚酯材料、水泥建材、营造建筑、海陆运输、百货零售、金融服务、电信科技、观光旅馆以及教育医疗与公益等十大事业的综合型企业集团。"
+  },
+  "business_segments": [
+    {
+      "id": "petrochemical_energy",
+      "name_cn": "石化能源",
+      "name_en": "Petrochemical & Energy",
+      "description_cn": "提供 PTA、EG、特用化学品、天然气发电等上游原料与能源产品，是集团重要的基础工业与能源供给事业。",
+      "representative_companies": [
+        "东联化学",
+        "亚东石化",
+        "嘉惠电力"
+      ],
+      "keywords_cn": [
+        "PTA",
+        "EG",
+        "特用化学品",
+        "天然气发电",
+        "基础原料"
+      ]
+    },
+    {
+      "id": "polyester_materials",
+      "name_cn": "聚酯材料 / 化纤纺织",
+      "name_en": "Polyester & Synthetic Fiber",
+      "description_cn": "集团起家与当前旗舰事业之一，涵盖 PET 瓶片、聚酯纤维、功能性纺织品及循环再生聚酯（rPET）等，积极发展低碳与循环经济。",
+      "representative_companies": [
+        "远东新世纪",
+        "宏远兴业"
+      ],
+      "keywords_cn": [
+        "聚酯纤维",
+        "PET 瓶片",
+        "rPET 再生材料",
+        "机能纺织品",
+        "循环经济"
+      ]
+    },
+    {
+      "id": "cement_building_materials",
+      "name_cn": "水泥建材",
+      "name_en": "Cement & Building Materials",
+      "description_cn": "深耕台湾与中国大陆的水泥与建材事业，提供水泥熟料、散装水泥、预拌混凝土及骨材，是区域重要的水泥品牌之一。",
+      "representative_companies": [
+        "亚洲水泥",
+        "江西亚东水泥"
+      ],
+      "keywords_cn": [
+        "水泥",
+        "熟料",
+        "预拌混凝土",
+        "骨材",
+        "基础建设"
+      ]
+    },
+    {
+      "id": "construction",
+      "name_cn": "营造建筑",
+      "name_en": "Construction",
+      "description_cn": "从事大型综合体、企业总部、商务办公及住宅项目开发，并参与基础建设与交通工程，提供从规划设计到施工的整体解决方案。",
+      "representative_companies": [],
+      "keywords_cn": [
+        "综合体开发",
+        "总部大楼",
+        "商务办公",
+        "住宅项目",
+        "基础设施"
+      ]
+    },
+    {
+      "id": "sea_land_transport",
+      "name_cn": "海陆运输",
+      "name_en": "Sea & Land Transportation",
+      "description_cn": "经营散装货轮与油轮等海运业务，同时提供陆运与物流服务，拥有稳定的船队与运力。",
+      "representative_companies": [
+        "裕民航运",
+        "亚力运输"
+      ],
+      "keywords_cn": [
+        "散装货轮",
+        "油轮",
+        "海运",
+        "陆运",
+        "物流服务"
+      ]
+    },
+    {
+      "id": "retail_department_store",
+      "name_cn": "百货零售",
+      "name_en": "Retail & Department Stores",
+      "description_cn": "贴近日常消费的零售事业，涵盖百货、购物中心、量贩店与精品超市，在两岸经营众多大型门店。",
+      "representative_companies": [
+        "远东百货",
+        "SOGO 百货",
+        "Mega 大远百",
+        "city’super"
+      ],
+      "keywords_cn": [
+        "百货商场",
+        "购物中心",
+        "精品超市",
+        "零售体验",
+        "生活服务"
+      ]
+    },
+    {
+      "id": "financial_services",
+      "name_cn": "金融服务",
+      "name_en": "Financial Services",
+      "description_cn": "涵盖商业银行、租赁、证券、资产管理等业务，为企业与个人提供多元金融服务。",
+      "representative_companies": [
+        "远东国际商业银行",
+        "亚东证券"
+      ],
+      "keywords_cn": [
+        "商业银行",
+        "融资租赁",
+        "证券",
+        "资产管理",
+        "综合金融"
+      ]
+    },
+    {
+      "id": "telecom_technology",
+      "name_cn": "通讯网络 / 电信科技",
+      "name_en": "Telecom & Technology",
+      "description_cn": "提供移动通信、固网宽带、云端服务、ETC 电子收费与数位应用等，是集团数位转型与科技服务的重要平台。",
+      "representative_companies": [
+        "远传电信",
+        "远通电收",
+        "数位联合"
+      ],
+      "keywords_cn": [
+        "移动通信",
+        "宽带网络",
+        "云服务",
+        "ETC 电子收费",
+        "数位应用"
+      ]
+    },
+    {
+      "id": "hotel_hospitality",
+      "name_cn": "观光旅馆",
+      "name_en": "Hotels & Hospitality",
+      "description_cn": "与国际品牌合作经营高端酒店及商务旅馆，于台湾主要城市提供观光与商务住宿服务。",
+      "representative_companies": [],
+      "keywords_cn": [
+        "高端酒店",
+        "商务旅馆",
+        "观光服务",
+        "品牌合作"
+      ]
+    },
+    {
+      "id": "education_medical_philanthropy",
+      "name_cn": "教育医疗与公益",
+      "name_en": "Education, Medical & Philanthropy",
+      "description_cn": "通过学校、医院与基金会等机构，持续投入教育、医疗与社会公益，是集团实践企业社会责任的重要领域。",
+      "representative_companies": [
+        "元智大学",
+        "亚东技术学院",
+        "亚东纪念医院"
+      ],
+      "keywords_cn": [
+        "大学教育",
+        "职业教育",
+        "综合医院",
+        "基金会",
+        "企业社会责任"
+      ]
+    }
+  ],
+  "esg": {
+    "strategy_cn": "远东集团将 ESG 视为长期发展的核心策略，从绿色产品、节能减碳、循环经济到社会公益与职场友善等面向，建立系统化的永续治理架构。",
+    "focus_topics_cn": [
+      "发展聚酯循环再生材料（rPET）、低碳水泥等绿色产品",
+      "提升能源效率，降低碳排放强度",
+      "推动资源循环与减废措施",
+      "投身教育赞助、医疗服务与社会关怀",
+      "强化公司治理与资讯透明度"
+    ],
+    "highlights_cn": [
+      "集团旗下多家公司在台湾企业永续奖中持续获奖，是长期获奖数量领先的企业集团之一。",
+      "远东新世纪、远传电信等多次获得「永续典范企业」等高等级奖项。",
+      "透过教育与医疗机构（如元智大学、亚东纪念医院）与基金会，持续推动社会影响力。"
+    ]
+  },
+  "shanghai_headquarters_showroom": {
+    "project_name_cn": "远东集团上海总部大楼 4F 企业展间",
+    "location_cn": "上海远企大楼 4 楼",
+    "theme": {
+      "main_cn": "幸福现在、永续未来",
+      "main_en": "Improving Lives, Shaping a Better Future",
+      "description_cn": "以「对未来社会的贡献」为出发点，通过空间与多媒体展陈，系统呈现远东集团十大事业版图及 ESG 实践。"
+    },
+    "purpose_cn": "用于集团领导与贵宾参访、招商路演、品牌故事与项目解说，是集团在上海的重要对外形象与数位展示窗口。",
+    "zones": [
+      {
+        "id": "entrance",
+        "name_cn": "入口区",
+        "description_cn": "设置远东集团立体 Logo 与磨砂玻璃背景，辅以不锈钢浮贴文字，形成清晰的展间入口与动线指引，同时尽量保留外侧江景视野。",
+        "keywords_cn": [
+          "品牌形象",
+          "入口导览",
+          "玻璃立面",
+          "不锈钢立体字"
+        ]
+      },
+      {
+        "id": "main_visual_wall",
+        "name_cn": "展间主视觉墙",
+        "description_cn": "以大幅图文与多媒体呈现「幸福现在、永续未来」主题，内嵌矩阵喇叭与语言切换面板，可根据访客需求切换影片语言。",
+        "keywords_cn": [
+          "主题展示",
+          "多语言影片",
+          "嵌入式音响"
+        ]
+      },
+      {
+        "id": "industry_story_csr",
+        "name_cn": "产业故事与 CSR 影片区",
+        "description_cn": "两组大屏幕搭配 Azure Kinect 体感互动装置，访客通过抬手在空中选择菜单，浏览服务业与制造业的产业故事及 CSR 内容，支持自动轮播与 Rollover 高亮提示。",
+        "keywords_cn": [
+          "体感互动",
+          "Kinect",
+          "产业故事",
+          "CSR 影片"
+        ]
+      },
+      {
+        "id": "product_digital_wall",
+        "name_cn": "产品数位墙（制造业产品体验区）",
+        "description_cn": "弧形多媒体墙结合 6 个实体发光产品方块按键与一块大屏幕，分别对应绿色 PTA、再生聚酯、可持续布料、低碳水泥、高性能水泥及都市建设基石等产品。按键触发相应产品影片，影片结束后回到循环首页动画。",
+        "keywords_cn": [
+          "实体按键",
+          "产品影片",
+          "绿色 PTA",
+          "再生材料",
+          "低碳水泥"
+        ]
+      },
+      {
+        "id": "global_map_timeline",
+        "name_cn": "远东十大事业与世界版图墙",
+        "description_cn": "以世界地图与时间线为视觉主轴，标示远东集团在全球的重要据点与发展历程，结合展间「时间线条」设计语言。",
+        "keywords_cn": [
+          "世界地图",
+          "时间轴",
+          "全球布局"
+        ]
+      },
+      {
+        "id": "meeting_area_bamboo_glass",
+        "name_cn": "会议区与竹林玻璃外墙",
+        "description_cn": "会议区外侧采用竹林图案玻璃与金属边框，兼具隐私与通透感，象征自然、人文与永续。迎宾屏幕可显示会议欢迎讯息及排程，走廊挂画延伸创新、永续、人文、世界、未来等主题。",
+        "keywords_cn": [
+          "竹林玻璃",
+          "会议欢迎屏",
+          "文化挂画",
+          "永续意象"
+        ]
+      },
+      {
+        "id": "reception_lounge",
+        "name_cn": "接待与休息区",
+        "description_cn": "配置环形沙发与中岛茶几，搭配木纹 LVT 与石材地面，营造温暖且专业的洽谈与休憩空间。",
+        "keywords_cn": [
+          "接待洽谈",
+          "休息区",
+          "软装设计"
+        ]
+      },
+      {
+        "id": "ar_sandtable_zone",
+        "name_cn": "集团建筑模型 AR 互动区",
+        "description_cn": "展间中央设置大型实体沙盘，配备最多 4 台 iPad 提供 AR 体验，将「远东城市」的建筑、道路与功能区以增强现实方式呈现。",
+        "keywords_cn": [
+          "实体沙盘",
+          "iPad AR",
+          "远东城市",
+          "多用户体验"
+        ]
+      }
+    ]
+  },
+  "ar_sandtable": {
+    "physical_model": {
+      "name_cn": "远东城市实体沙盘",
+      "description_cn": "以简洁现代的模型语言呈现远东集团重要建筑与园区，建筑主体多为素色体块，辅以绿化与水体元素，局部重点建筑可通过透光与灯光强化夜景氛围。",
+      "design_principles_cn": [
+        "即使不使用 iPad，访客也能从实体沙盘快速理解整体布局。",
+        "沙盘台面清晰标注主要建筑与功能区，并通过 QR 码链接全区平面图。",
+        "模型色彩与材质风格需与展间室内设计统一，保持简洁与现代感。"
+      ]
+    },
+    "ar_app": {
+      "device": "iPad Pro",
+      "max_simultaneous_devices": 4,
+      "core_functions_cn": [
+        "通过 iPad 摄像头识别实体沙盘，将虚拟三维建筑、道路与绿化叠加在沙盘之上，实现「数字城市」覆盖实体模型。",
+        "支持白天与夜间两种场景模式，一键切换，实现建筑日景及夜景灯光效果展示。",
+        "呈现车辆流线、区域高亮与环境变化等动态特效，帮助理解交通组织与功能分区。",
+        "点击建筑上方交互图标可打开详细信息页面，查看图文说明、关键数据与宣传视频。",
+        "左侧按钮可控制全局 TAG 显示/隐藏，右侧可按十大事业进行产业聚焦，高亮显示相关建筑。",
+        "提供整体布局视图与列表浏览方式，便于按建筑名称或编号快速跳转到对应位置。"
+      ],
+      "usage_flow_cn": [
+        "从主屏幕点击「远东 AR 沙盘」应用图标启动程序。",
+        "首次使用时允许应用访问摄像头。",
+        "在主界面点击「开始探索」，拿起 iPad 对准沙盘中心，保持约 45 度角、50 厘米至 1 米距离。",
+        "缓慢移动设备，使整个沙盘完整出现在画面中，等待系统自动完成 AR 对位。",
+        "通过绕行沙盘、抬高或降低 iPad 调整观察角度，搭配界面按钮切换日夜模式、产业聚焦与信息弹窗。",
+        "长时间无操作（约 20 秒）应用会自动回到欢迎界面，便于下一位访客重新体验。"
+      ],
+      "faq_cn": [
+        {
+          "question": "画面中的虚拟模型对不准沙盘、出现漂移怎么办？",
+          "answer": "这是 AR 定位追踪不稳定造成。建议先停下移动，缓慢环视整个沙盘，让系统重新建立环境地图；操作时尽量平稳，避免剧烈晃动。如仍无法恢复，可联系现场人员协助，将 iPad 放回原位并重新启动应用。"
+        },
+        {
+          "question": "应用运行卡顿或闪退怎么办？",
+          "answer": "可能与设备长时间运行或后台程序过多有关，可先关闭其他应用，并视情况重启 iPad 后再次打开 AR 应用。"
+        },
+        {
+          "question": "观众可以在自己的手机或平板上安装同款应用吗？",
+          "answer": "目前该应用仅配合展厅内实体沙盘使用，未对外开放下载，离开展厅无法获得完整的 AR 对位与体验。"
+        }
+      ]
+    },
+    "smart_building_integration": {
+      "vision_cn": "在现有 AR 观展体验基础上，通过叠加实时数据与智能分析，将 AR 沙盘升级为「智慧建筑与园区的可视化界面」。",
+      "scenarios_cn": [
+        {
+          "name_cn": "ESG 与能源可视化",
+          "description_cn": "在 AR 画面中直接叠加各建筑或楼层的能耗、碳排放与节能改造前后对比数据，通过日夜切换与颜色编码等方式，让节能成效「看得见、讲得清」，用于 ESG 汇报与管理沟通。"
+        },
+        {
+          "name_cn": "安全与应急演练 / 客流导向",
+          "description_cn": "在虚拟城市上叠加疏散路径、集合点、备用电源覆盖圈等信息，用于应急演练与安全培训。也可切换至客流模式，展示高峰客流流线与到达路径，辅助运营与动线优化。"
+        },
+        {
+          "name_cn": "空间上下文 LLM 助理",
+          "description_cn": "在 AR 画面中通过悬浮对话窗口接入大语言模型助手，访客可直接就当前所见建筑或区域提问，例如「这栋楼的主要功能是什么？」「该项目的 ESG 亮点有哪些？」「招商卖点有哪些？」系统结合空间上下文与知识库即时应答。"
+        }
+      ]
+    }
+  },
+  "qna_templates": [
+    {
+      "id": "group_overview",
+      "question_cn": "远东集团是一家什么样的企业？",
+      "answer_cn": "远东集团是源自台湾的大型多元化企业集团，拥有七十年以上历史，从纺织与化纤起家，目前事业横跨石化能源、聚酯材料、水泥建材、营造建筑、海陆运输、百货零售、金融服务、电信科技、观光旅馆，以及教育医疗与公益等十大领域，旗下公司超过两百四十家，员工约五万七千人。"
+    },
+    {
+      "id": "esg_overview",
+      "question_cn": "远东集团在 ESG 永续方面有什么作为？",
+      "answer_cn": "远东集团将 ESG 视为长期发展的核心策略，从绿色产品、节能减碳、循环经济、公司治理到社会公益等多方面持续投入。旗下多家公司在企业永续奖中屡获肯定，例如远东新世纪与远传电信多次获得永续典范类奖项，并通过教育与医疗机构在社会层面持续创造正向影响。"
+    },
+    {
+      "id": "shanghai_showroom_purpose",
+      "question_cn": "上海远企大楼四楼企业展间的主要功能是什么？",
+      "answer_cn": "上海远企大楼四楼企业展间以「幸福现在、永续未来」为主题，是远东集团在上海的重要对外形象空间，主要用于接待集团领导与贵宾、进行招商路演、介绍集团十大事业与 ESG 实践，也是数字化展示与交流的平台。"
+    },
+    {
+      "id": "ar_sandtable_function",
+      "question_cn": "展间里的 AR 沙盘可以做什么？",
+      "answer_cn": "展间中央的实体沙盘搭配 iPad AR 应用，能将虚拟的「远东城市」叠加在实体模型之上。访客可以切换白天和夜晚场景、观看车辆流线与区域高亮等动态效果，并通过点击建筑上方图标查看图文与视频介绍，还可以按产业分类高亮显示相关建筑，更直观地了解远东集团在不同领域的布局。"
+    },
+    {
+      "id": "ar_sandtable_future",
+      "question_cn": "未来 AR 沙盘会如何与智慧建筑结合？",
+      "answer_cn": "未来可在现有 AR 城市基础上叠加能耗、碳排、安全疏散路径、客流流线等数据，让沙盘从静态展示模型升级为智慧建筑与园区的可视化界面，并结合大语言模型助手，在 AR 场景中即时回答与 ESG、应急、招商等相关的问题。"
+    },
+    {
+      "id": "ar_technical_issue_alignment",
+      "question_cn": "如果 AR 画面里的虚拟模型对不准沙盘怎么办？",
+      "answer_cn": "如果出现对不准或模型漂移的问题，可以先停下移动 iPad，缓慢环视整座沙盘，让系统重新定位；在操作时尽量保持平稳，避免剧烈晃动。如仍无法恢复，可联系现场工作人员协助重启应用。"
+    }
+  ]
+}
