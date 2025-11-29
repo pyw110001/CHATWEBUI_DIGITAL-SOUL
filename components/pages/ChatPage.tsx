@@ -68,13 +68,18 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
       const finalAiMessage: Message = { id: aiMessageId, sender: 'ai', text: aiResponseText };
       setMessages(prev => {
         const updated = prev.map(msg => msg.id === aiMessageId ? finalAiMessage : msg);
-        // Fetch suggested replies based on the new conversation history
-        const newHistory = [...updated.filter(msg => msg.id !== aiMessageId && msg.id !== 'init'), newUserMessage, finalAiMessage];
-        getSuggestedReplies(newHistory).then(replies => {
-          setSuggestedReplies(replies);
-        }).catch(err => {
-          console.error("Error fetching suggested replies:", err);
-        });
+        // 禁用建议回复功能以提升响应速度
+        // 如需启用，取消下面的注释
+        /*
+        setTimeout(() => {
+          const newHistory = [...updated.filter(msg => msg.id !== aiMessageId && msg.id !== 'init'), newUserMessage, finalAiMessage];
+          getSuggestedReplies(newHistory).then(replies => {
+            setSuggestedReplies(replies);
+          }).catch(err => {
+            console.error("Error fetching suggested replies:", err);
+          });
+        }, 100);
+        */
         return updated;
       });
 
@@ -153,9 +158,9 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
   }, [agent.id]); // Only re-run when agent changes
 
   return (
-    <div className="relative flex h-screen bg-[#F0F2F5] dark:bg-black">
-      <div className="flex flex-col w-full md:w-2/5 lg:w-1/3 bg-white dark:bg-zinc-900 shadow-lg">
-        <header className="flex items-center p-4 border-b dark:border-zinc-700">
+    <div className="relative flex h-screen bg-[#F0F2F5] dark:bg-black overflow-hidden">
+      <div className="flex flex-col w-full md:w-2/5 lg:w-1/3 bg-white dark:bg-zinc-900 shadow-lg h-full min-h-0">
+        <header className="flex items-center p-4 border-b dark:border-zinc-700 flex-shrink-0">
           <button onClick={onBack} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
           </button>
@@ -166,7 +171,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
           {messages.map((msg) => (
             <div key={msg.id} className={`flex items-start gap-3 ${msg.sender === 'user' ? 'justify-end' : ''}`}>
               {msg.sender === 'ai' && <img src={agent.avatarUrl} alt="AI Avatar" className="w-8 h-8 rounded-full" />}
@@ -179,7 +184,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ agent, onBack, initialMessage }) =>
           <div ref={messagesEndRef} />
         </div>
         
-        <div className="p-4 border-t dark:border-zinc-700">
+        <div className="p-4 border-t dark:border-zinc-700 flex-shrink-0">
             {suggestedReplies.length > 0 && (
                 <div className="mb-2">
                     <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">建议回复</p>

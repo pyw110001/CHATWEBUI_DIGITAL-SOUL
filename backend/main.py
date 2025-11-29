@@ -11,9 +11,18 @@ import os
 import json
 import requests
 from dotenv import load_dotenv
+import os
 
-# 加载环境变量
-load_dotenv()
+# 加载环境变量 - 明确指定.env文件路径，处理BOM字符
+env_path = os.path.join(os.path.dirname(__file__), '.env')
+# 先读取文件内容，去除BOM，然后重新写入临时文件
+if os.path.exists(env_path):
+    with open(env_path, 'r', encoding='utf-8-sig') as f:
+        content = f.read()
+    # 使用utf-8-sig编码自动去除BOM，或手动处理
+    with open(env_path, 'w', encoding='utf-8') as f:
+        f.write(content)
+load_dotenv(dotenv_path=env_path)
 
 app = FastAPI(title="ChatGLM API Service")
 
@@ -219,20 +228,21 @@ async def chat_completions(request: ChatRequest):
 @app.post("/api/suggested-replies")
 async def get_suggested_replies(request: SuggestedRepliesRequest):
     """
-    获取建议回复
+    获取建议回复 - 优化版本，减少延迟
     """
     if not CHATGLM_API_KEY:
         return {"suggestions": []}
 
-    # 构建对话历史
+    # 构建对话历史（只取最近3轮对话以减少token数）
+    recent_history = request.conversation_history[-6:] if len(request.conversation_history) > 6 else request.conversation_history
     conversation_text = "\n".join([
-        f"{msg.role}: {msg.content}" for msg in request.conversation_history
+        f"{msg.role}: {msg.content}" for msg in recent_history
     ])
 
     messages = [
         {
             "role": "user",
-            "content": f"""根据以下对话，为用户建议3个简短、相关且引人入胜的回复。
+            "content": f"""根据以下对话，为用户建议3个简短、相关且引人入胜的回复（每个回复不超过15字）。
 
 对话:
 {conversation_text}
@@ -245,7 +255,9 @@ async def get_suggested_replies(request: SuggestedRepliesRequest):
         "model": CHATGLM_MODEL,
         "messages": messages,
         "stream": False,
-        "response_format": {"type": "json_object"}
+        "response_format": {"type": "json_object"},
+        "temperature": 0.7,
+        "max_tokens": 100  # 限制token数以加快响应
     }
 
     try:
@@ -253,7 +265,7 @@ async def get_suggested_replies(request: SuggestedRepliesRequest):
             f"{CHATGLM_API_BASE}/chat/completions",
             headers=get_chatglm_headers(),
             json=payload,
-            timeout=30
+            timeout=8  # 减少超时时间从30秒到8秒
         )
         
         if response.status_code != 200:
