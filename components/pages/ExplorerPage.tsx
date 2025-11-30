@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Agent } from '../../types';
 import AgentCard from '../AgentCard';
 import AppleLogoIcon from '../icons/AppleLogoIcon';
@@ -132,21 +133,75 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
 
 
   return (
-    <div className="bg-[#1C1C1E] min-h-screen text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <header className="py-6 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
+    <div className="bg-[#1C1C1E] min-h-screen text-white relative overflow-hidden">
+      {/* Subtle Background Animation */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"
+          animate={{
+            x: [0, 50, 0],
+            y: [0, 30, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+        <motion.div
+          className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"
+          animate={{
+            x: [0, -30, 0],
+            y: [0, -50, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.header 
+          className="py-6 flex justify-between items-center"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div 
+            className="flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+          >
             {logoUrl ? (
-              <img src={logoUrl} alt="Custom Logo" className="h-8 w-8 rounded-full object-cover" />
+              <motion.img 
+                src={logoUrl} 
+                alt="Custom Logo" 
+                className="h-8 w-8 rounded-full object-cover"
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }}
+              />
             ) : (
-              <AppleLogoIcon className="h-6 w-6" />
+              <motion.div
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }}
+              >
+                <AppleLogoIcon className="h-6 w-6" />
+              </motion.div>
             )}
             <h1 className="text-xl font-semibold">智能体</h1>
-          </div>
+          </motion.div>
           <div className="flex items-center space-x-4">
-            <button onClick={() => setIsSearchVisible(!isSearchVisible)} className="p-2 rounded-full hover:bg-white/10">
+            <motion.button 
+              onClick={() => setIsSearchVisible(!isSearchVisible)} 
+              className="p-2 rounded-full hover:bg-white/10 transition-colors"
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <SearchIcon className="h-5 w-5" />
-            </button>
+            </motion.button>
             <input 
               type="file" 
               ref={logoInputRef} 
@@ -155,87 +210,194 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
               accept="image/*"
             />
             <div className="relative" ref={userMenuRef}>
-              <img 
+              <motion.img 
                 src="https://picsum.photos/seed/user/40/40" 
                 alt="User" 
                 className="h-8 w-8 rounded-full cursor-pointer"
                 onClick={() => setIsUserMenuOpen(prev => !prev)}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               />
-              {isUserMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-zinc-800 border border-zinc-700 rounded-md shadow-lg py-1 z-50">
-                    <button
-                        onClick={() => {
-                            handleLogoUploadClick();
-                            setIsUserMenuOpen(false);
-                        }}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-zinc-600 transition-colors"
-                    >
-                        更换标志
-                    </button>
-                    <button
-                        onClick={onRestart}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-zinc-600 transition-colors"
-                    >
-                        重新启动
-                    </button>
-                </div>
-              )}
+              <AnimatePresence>
+                {isUserMenuOpen && (
+                  <motion.div 
+                    className="absolute right-0 mt-2 w-48 bg-zinc-800 border border-zinc-700 rounded-md shadow-lg py-1 z-50"
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                      <motion.button
+                          onClick={() => {
+                              handleLogoUploadClick();
+                              setIsUserMenuOpen(false);
+                          }}
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-zinc-600 transition-colors"
+                          whileHover={{ x: 4 }}
+                          whileTap={{ scale: 0.98 }}
+                      >
+                          更换标志
+                      </motion.button>
+                      <motion.button
+                          onClick={onRestart}
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-zinc-600 transition-colors"
+                          whileHover={{ x: 4 }}
+                          whileTap={{ scale: 0.98 }}
+                      >
+                          重新启动
+                      </motion.button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
-        </header>
+        </motion.header>
 
         <main className="py-10">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">探索AI智能体</h2>
-            <form onSubmit={handleQuickChatSubmit} className="mt-6 max-w-xl mx-auto">
-              <input
-                type="text"
-                placeholder="与自定义智能体开始新的聊天..."
-                value={quickChatInput}
-                onChange={(e) => setQuickChatInput(e.target.value)}
-                disabled={isCreatingAgent}
-                className="w-full bg-white/10 border border-white/20 rounded-full py-3 px-6 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
-              {isCreatingAgent && <p className="text-sm text-purple-300 mt-2">正在创建您的新智能体...</p>}
-            </form>
+          <motion.div 
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <motion.h2 
+              className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              探索AI智能体
+            </motion.h2>
+            <motion.form 
+              onSubmit={handleQuickChatSubmit} 
+              className="mt-6 max-w-xl mx-auto"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <motion.div
+                className="relative"
+                whileFocus={{ scale: 1.02 }}
+              >
+                <motion.input
+                  type="text"
+                  placeholder="与自定义智能体开始新的聊天..."
+                  value={quickChatInput}
+                  onChange={(e) => setQuickChatInput(e.target.value)}
+                  disabled={isCreatingAgent}
+                  className="w-full bg-white/10 border border-white/20 rounded-full py-3 px-6 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300"
+                />
+                {quickChatInput && (
+                  <motion.div
+                    className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 blur-xl -z-10"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  />
+                )}
+              </motion.div>
+              <AnimatePresence>
+                {isCreatingAgent && (
+                  <motion.p 
+                    className="text-sm text-purple-300 mt-2"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                  >
+                    正在创建您的新智能体...
+                  </motion.p>
+                )}
+              </AnimatePresence>
+            </motion.form>
+            <AnimatePresence>
              {isSearchVisible && (
-              <div className="mt-6 max-w-md mx-auto">
-                <input
+              <motion.div 
+                className="mt-6 max-w-md mx-auto"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <motion.input
                   type="text"
                   placeholder="搜索智能体..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-white/10 border border-white/20 rounded-full py-2 px-5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-white/10 border border-white/20 rounded-full py-2 px-5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300"
+                  initial={{ scale: 0.9 }}
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0.9 }}
                 />
-              </div>
+              </motion.div>
             )}
-          </div>
+            </AnimatePresence>
+          </motion.div>
           
-          <div className="flex justify-center mb-8 space-x-2">
-            {categories.map(category => (
-                <button 
+          <motion.div 
+            className="flex justify-center mb-8 space-x-2 flex-wrap gap-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            {categories.map((category, index) => (
+                <motion.button 
                   key={category} 
                   onClick={() => setActiveCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${activeCategory === category ? 'bg-white text-black' : 'bg-transparent hover:bg-white/10 text-white'}`}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    activeCategory === category 
+                      ? 'bg-white text-black shadow-lg shadow-purple-500/50' 
+                      : 'bg-transparent hover:bg-white/10 text-white'
+                  }`}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.3 + index * 0.05, duration: 0.3 }}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                     {category}
-                </button>
+                </motion.button>
             ))}
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {categoryFilteredAgents.map(agent => (
-              <AgentCard key={agent.id} agent={agent} onSelect={onSelectAgent} onOpenSettings={handleOpenSettings} />
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            {categoryFilteredAgents.map((agent, index) => (
+              <motion.div
+                key={agent.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 + index * 0.05, duration: 0.4 }}
+              >
+                <AgentCard agent={agent} onSelect={onSelectAgent} onOpenSettings={handleOpenSettings} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </main>
       </div>
 
       {/* Settings Modal */}
-      {editingAgent && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50" onClick={handleCloseSettings}>
-          <div className="bg-zinc-800 rounded-lg shadow-xl p-6 w-full max-w-lg text-white" onClick={(e) => e.stopPropagation()}>
-            <h2 className="text-xl font-semibold mb-4">编辑智能体: {editingAgent.name}</h2>
+      <AnimatePresence>
+        {editingAgent && (
+          <motion.div 
+            className="fixed inset-0 bg-black/60 flex items-center justify-center z-50" 
+            onClick={handleCloseSettings}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div 
+              className="bg-zinc-800 rounded-lg shadow-xl p-6 w-full max-w-lg text-white" 
+              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <h2 className="text-xl font-semibold mb-4">编辑智能体: {editingAgent.name}</h2>
             <div className="mb-4">
               <label htmlFor="systemPrompt" className="block text-sm font-medium text-gray-300 mb-2">系统提示</label>
               <textarea
@@ -265,16 +427,27 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
               </div>
             </div>
             <div className="flex justify-end space-x-4">
-              <button onClick={handleCloseSettings} className="px-4 py-2 rounded-md text-gray-200 bg-zinc-600 hover:bg-zinc-500 transition-colors">
+              <motion.button 
+                onClick={handleCloseSettings} 
+                className="px-4 py-2 rounded-md text-gray-200 bg-zinc-600 hover:bg-zinc-500 transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 取消
-              </button>
-              <button onClick={handleSaveSettings} className="px-4 py-2 rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+              </motion.button>
+              <motion.button 
+                onClick={handleSaveSettings} 
+                className="px-4 py-2 rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 保存更改
-              </button>
+              </motion.button>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
