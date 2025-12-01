@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: chatglm-api-service
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: CHATGLM_API_KEY
+        sync: false
+      - key: CHATGLM_MODEL
+        value: glm-4.5-airx
+      - key: ALLOWED_ORIGINS
+        sync: false
+

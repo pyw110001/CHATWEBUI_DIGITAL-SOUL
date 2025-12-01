@@ -43,6 +43,16 @@ const App: React.FC = () => {
     setAgents(prev => prev.map(agent => agent.id === updatedAgent.id ? updatedAgent : agent));
   }, []);
 
+  const handleDeleteAgent = useCallback((agentId: string) => {
+    setAgents(prev => prev.filter(agent => agent.id !== agentId));
+    // 如果删除的是当前正在聊天的智能体，返回导览页
+    if (activeChat && activeChat.agent.id === agentId) {
+      setActiveChat(null);
+      setPrevPage(currentPage);
+      setCurrentPage(Page.EXPLORER);
+    }
+  }, [activeChat, currentPage]);
+
   const handleLogoChange = useCallback((url: string) => {
     setLogoUrl(url);
   }, []);
@@ -124,6 +134,7 @@ const App: React.FC = () => {
               onSelectAgent={navigateToChat} 
               onAddAgent={handleAddAgent}
               onUpdateAgent={handleUpdateAgent}
+              onDeleteAgent={handleDeleteAgent}
               logoUrl={logoUrl}
               onLogoChange={handleLogoChange}
               onRestart={handleRestart}

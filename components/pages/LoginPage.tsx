@@ -8,9 +8,10 @@ interface LoginPageProps {
 
 const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, logoUrl }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
-  const isButtonDisabled = phoneNumber.trim() === '' || !agreedToTerms;
+  const isButtonDisabled = phoneNumber.trim() === '' || password.trim() === '' || !agreedToTerms;
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +46,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, logoUrl }) => {
 
             <div className="text-left mb-10">
                 <h2 className="text-3xl font-bold text-white">登录账户</h2>
-                <p className="text-gray-400 mt-2">输入您的手机号即可开始。</p>
+                <p className="text-gray-400 mt-2">输入您的手机号和密码即可开始。</p>
             </div>
 
             <form onSubmit={handleLogin}>
@@ -55,6 +56,15 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, logoUrl }) => {
                   placeholder="手机号码"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
+                  className="w-full px-4 py-3 bg-[#222] border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div className="mb-4">
+                <input
+                  type="password"
+                  placeholder="密码"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 bg-[#222] border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>

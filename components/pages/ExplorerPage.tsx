@@ -10,12 +10,13 @@ interface ExplorerPageProps {
   onSelectAgent: (agent: Agent, initialMessage?: string) => void;
   onAddAgent: (agent: Agent) => void;
   onUpdateAgent: (agent: Agent) => void;
+  onDeleteAgent: (agentId: string) => void;
   logoUrl: string | null;
   onLogoChange: (url: string) => void;
   onRestart: () => void;
 }
 
-const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAddAgent, onUpdateAgent, logoUrl, onLogoChange, onRestart }) => {
+const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAddAgent, onUpdateAgent, onDeleteAgent, logoUrl, onLogoChange, onRestart }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [quickChatInput, setQuickChatInput] = useState('');
@@ -225,7 +226,13 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {categoryFilteredAgents.map(agent => (
-              <AgentCard key={agent.id} agent={agent} onSelect={onSelectAgent} onOpenSettings={handleOpenSettings} />
+              <AgentCard 
+                key={agent.id} 
+                agent={agent} 
+                onSelect={onSelectAgent} 
+                onOpenSettings={handleOpenSettings}
+                onDelete={onDeleteAgent}
+              />
             ))}
           </div>
         </main>

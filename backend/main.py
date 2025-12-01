@@ -27,9 +27,14 @@ load_dotenv(dotenv_path=env_path)
 app = FastAPI(title="ChatGLM API Service")
 
 # 配置CORS，允许前端访问
+# 从环境变量读取允许的前端域名，支持多个域名
+allowed_origins_str = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000")
+allowed_origins = [origin.strip() for origin in allowed_origins_str.split(",") if origin.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],  # Vite默认端口
+    allow_origin_regex=r"https://.*\.(pages\.dev|cloudflarepages\.app)$",  # 允许所有 Cloudflare Pages 域名
+    allow_origins=allowed_origins,  # 允许指定的本地开发域名
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
