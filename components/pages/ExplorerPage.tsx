@@ -12,12 +12,13 @@ interface ExplorerPageProps {
   onAddAgent: (agent: Agent) => void;
   onUpdateAgent: (agent: Agent) => void;
   onDeleteAgent: (agentId: string) => void;
+  onStartMultiAgent: () => void;
   logoUrl: string | null;
   onLogoChange: (url: string) => void;
   onRestart: () => void;
 }
 
-const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAddAgent, onUpdateAgent, onDeleteAgent, logoUrl, onLogoChange, onRestart }) => {
+const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAddAgent, onUpdateAgent, onDeleteAgent, onStartMultiAgent, logoUrl, onLogoChange, onRestart }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [quickChatInput, setQuickChatInput] = useState('');
@@ -269,6 +270,17 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
             >
               探索AI智能体
             </motion.h2>
+            <motion.button
+              onClick={onStartMultiAgent}
+              className="mt-6 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-full hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg shadow-purple-500/50"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              whileHover={{ scale: 1.05, shadow: '0 10px 25px rgba(139, 92, 246, 0.4)' }}
+              whileTap={{ scale: 0.95 }}
+            >
+              🎭 多智能体对话
+            </motion.button>
             <motion.form 
               onSubmit={handleQuickChatSubmit} 
               className="mt-6 max-w-xl mx-auto"

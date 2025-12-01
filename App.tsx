@@ -4,6 +4,8 @@ import { Page, Agent } from './types';
 import LoginPage from './components/pages/LoginPage';
 import ExplorerPage from './components/pages/ExplorerPage';
 import ChatPage from './components/pages/ChatPage';
+import MultiAgentSelectPage from './components/pages/MultiAgentSelectPage';
+import MultiAgentChatPage from './components/pages/MultiAgentChatPage';
 import { INITIAL_AGENTS } from './constants';
 
 interface ChatState {
@@ -16,6 +18,7 @@ const App: React.FC = () => {
   const [prevPage, setPrevPage] = useState<Page | null>(null);
   const [agents, setAgents] = useState<Agent[]>(INITIAL_AGENTS);
   const [activeChat, setActiveChat] = useState<ChatState | null>(null);
+  const [multiAgentChat, setMultiAgentChat] = useState<Agent[] | null>(null);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
 
   const navigateToExplorer = useCallback(() => {
@@ -32,6 +35,24 @@ const App: React.FC = () => {
   const navigateToExplorerFromChat = useCallback(() => {
     setPrevPage(currentPage);
     setActiveChat(null);
+    setMultiAgentChat(null);
+    setCurrentPage(Page.EXPLORER);
+  }, [currentPage]);
+
+  const navigateToMultiAgentSelect = useCallback(() => {
+    setPrevPage(currentPage);
+    setCurrentPage(Page.MULTI_AGENT_SELECT);
+  }, [currentPage]);
+
+  const navigateToMultiAgentChat = useCallback((selectedAgents: Agent[]) => {
+    setPrevPage(currentPage);
+    setMultiAgentChat(selectedAgents);
+    setCurrentPage(Page.MULTI_AGENT_CHAT);
+  }, [currentPage]);
+
+  const navigateToExplorerFromMultiAgent = useCallback(() => {
+    setPrevPage(currentPage);
+    setMultiAgentChat(null);
     setCurrentPage(Page.EXPLORER);
   }, [currentPage]);
 
@@ -93,7 +114,7 @@ const App: React.FC = () => {
 
   // 确定页面切换方向
   const getPageDirection = (page: Page): number => {
-    const pageOrder = [Page.LOGIN, Page.EXPLORER, Page.CHAT];
+    const pageOrder = [Page.LOGIN, Page.EXPLORER, Page.CHAT, Page.MULTI_AGENT_SELECT, Page.MULTI_AGENT_CHAT];
     const prevIndex = prevPage !== null ? pageOrder.indexOf(prevPage) : -1;
     const nextIndex = pageOrder.indexOf(page);
     if (prevIndex === -1) return 1; // 首次加载，默认向右
@@ -135,12 +156,54 @@ const App: React.FC = () => {
               onAddAgent={handleAddAgent}
               onUpdateAgent={handleUpdateAgent}
               onDeleteAgent={handleDeleteAgent}
+              onStartMultiAgent={navigateToMultiAgentSelect}
               logoUrl={logoUrl}
               onLogoChange={handleLogoChange}
               onRestart={handleRestart}
             />
           </motion.div>
         );
+      case Page.MULTI_AGENT_SELECT:
+        return (
+          <motion.div
+            key="multi-agent-select"
+            custom={getPageDirection(Page.MULTI_AGENT_SELECT)}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={pageVariants}
+            transition={pageTransition}
+            className="absolute inset-0"
+          >
+            <MultiAgentSelectPage
+              agents={agents}
+              onSelect={navigateToMultiAgentChat}
+              onBack={navigateToExplorer}
+            />
+          </motion.div>
+        );
+      case Page.MULTI_AGENT_CHAT:
+        if (multiAgentChat && multiAgentChat.length > 0) {
+          return (
+            <motion.div
+              key={`multi-agent-chat-${multiAgentChat.map(a => a.id).join('-')}`}
+              custom={getPageDirection(Page.MULTI_AGENT_CHAT)}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={pageVariants}
+              transition={pageTransition}
+              className="absolute inset-0"
+            >
+              <MultiAgentChatPage
+                agents={multiAgentChat}
+                onBack={navigateToExplorerFromMultiAgent}
+              />
+            </motion.div>
+          );
+        }
+        navigateToExplorer();
+        return null;
       case Page.CHAT:
         if (activeChat) {
           return (
