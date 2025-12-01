@@ -362,9 +362,15 @@ const ExplorerPage: React.FC<ExplorerPageProps> = ({ agents, onSelectAgent, onAd
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {categoryFilteredAgents.map(agent => (
-              <AgentCard key={agent.id} agent={agent} onSelect={onSelectAgent} onOpenSettings={handleOpenSettings} />
+              <AgentCard 
+                key={agent.id} 
+                agent={agent} 
+                onSelect={onSelectAgent} 
+                onOpenSettings={handleOpenSettings}
+                onDelete={onDeleteAgent}
+              />
             ))}
-          </motion.div>
+          </div>
         </main>
       </div>
 

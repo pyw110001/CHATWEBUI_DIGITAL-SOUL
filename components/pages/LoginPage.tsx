@@ -231,8 +231,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, logoUrl }) => {
               transition={{ delay: 0.2, duration: 0.6 }}
             >
                 <h2 className="text-3xl font-bold text-white">登录账户</h2>
-                <p className="text-gray-400 mt-2">输入您的手机号即可开始。</p>
-            </div>
+                <p className="text-gray-400 mt-2">输入您的手机号和密码即可开始。</p>
+            </motion.div>
 
             <form onSubmit={handleLogin}>
               <motion.div 
@@ -248,8 +248,22 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, logoUrl }) => {
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   className="w-full px-4 py-3 bg-[#222] border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-              </div>
-              <button
+              </motion.div>
+              <motion.div 
+                className="mb-4 relative"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35, duration: 0.6 }}
+              >
+                <motion.input
+                  type="password"
+                  placeholder="密码"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 bg-[#222] border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </motion.div>
+              <motion.button
                 type="submit"
                 disabled={isButtonDisabled}
                 className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400/50 disabled:cursor-not-allowed relative overflow-hidden"
