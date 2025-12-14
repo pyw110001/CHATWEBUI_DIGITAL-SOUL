@@ -27,7 +27,7 @@ function isOriginAllowed(origin: string | undefined): boolean {
  * CORS配置选项
  */
 const corsOptions: CorsOptions = {
-  origin: (origin, callback) => {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
     if (isOriginAllowed(origin)) {
       callback(null, true);
     } else {

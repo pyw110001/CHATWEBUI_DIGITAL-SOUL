@@ -1,7 +1,7 @@
 /**
  * Express服务器主入口文件
  */
-import express, { Express } from 'express';
+import express, { Express, Request, Response } from 'express';
 import { config } from './config/index.js';
 import { corsMiddleware } from './middleware/cors.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
@@ -11,7 +11,7 @@ import healthRoutes from './routes/healthRoutes.js';
 /**
  * 创建Express应用
  */
-function createApp(): Express {
+export function createApp(): Express {
   const app = express();
 
   // 中间件
@@ -19,7 +19,7 @@ function createApp(): Express {
   app.use(corsMiddleware); // CORS支持
 
   // 根路径 - API信息
-  app.get('/', (_req, res) => {
+  app.get('/', (_req: Request, res: Response) => {
     res.json({
       name: 'ChatGLM API Service',
       version: '1.0.0',
@@ -53,9 +53,15 @@ function createApp(): Express {
 }
 
 /**
- * 启动服务器
+ * 启动服务器（仅在非 Vercel 环境运行）
  */
 function startServer(): void {
+  // 检查是否在 Vercel 环境（Vercel 会设置 VERCEL 环境变量）
+  if (process.env.VERCEL) {
+    console.log('运行在 Vercel 环境，跳过服务器启动');
+    return;
+  }
+
   const app = createApp();
   
   app.listen(config.server.port, config.server.host, () => {
@@ -67,6 +73,6 @@ function startServer(): void {
   });
 }
 
-// 启动服务器
+// 启动服务器（仅在非 Vercel 环境）
 startServer();
 
