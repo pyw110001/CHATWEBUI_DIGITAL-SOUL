@@ -1,106 +1,122 @@
-# 快速启动指南
+# AI智能体聊天系统
 
-## 前置要求
+基于 React + TypeScript + Express 的智能对话系统，支持多智能体对话和流式响应。
 
-- Python 3.8+
-- Node.js 16+
-- ChatGLM API密钥（从 [智谱AI开放平台](https://open.bigmodel.cn/) 获取）
+## 🚀 快速开始
 
-## 快速开始
-
-### 1. 设置Python后端
+### 一键启动
 
 ```bash
-# 进入后端目录
-cd backend
-
-# 安装依赖
-pip install -r requirements.txt
-
-# 创建环境变量文件
-# Windows (PowerShell)
-echo "CHATGLM_API_KEY=your_api_key_here" > .env
-echo "CHATGLM_MODEL=glm-4.6" >> .env
-
-# Linux/Mac
-cat > .env << EOF
-CHATGLM_API_KEY=your_api_key_here
-CHATGLM_MODEL=glm-4.6
-EOF
-
-# 编辑 .env 文件，填入你的实际API密钥
-# 然后启动后端
-python main.py
-```
-
-后端将在 `http://localhost:8000` 启动。
-
-### 2. 启动前端
-
-```bash
-# 在项目根目录
-npm install
 npm run dev
 ```
 
-前端将在 `http://localhost:3000` 启动。
+这将同时启动：
+- 前端开发服务器：`http://localhost:3000`
+- 后端API服务：`http://localhost:8000`
 
-### 3. 访问应用
+### 首次使用
 
-打开浏览器访问 `http://localhost:3000`
+1. **安装依赖**
+   ```bash
+   # 安装前端依赖
+   npm install
+   
+   # 安装后端依赖
+   cd server
+   npm install
+   cd ..
+   ```
 
-## 验证安装
+2. **配置API密钥**
+   - 在 `server/` 目录下创建 `.env` 文件
+   - 填入你的 ChatGLM API Key：
+     ```env
+     CHATGLM_API_KEY=your_api_key_here
+     CHATGLM_MODEL=glm-4.5-airx
+     ```
+   - 详细配置说明请查看 [API_KEY_CONFIG.md](./API_KEY_CONFIG.md)
 
-### 检查后端是否正常运行
+3. **启动项目**
+   ```bash
+   npm run dev
+   ```
 
-访问 `http://localhost:8000/api/health`，应该看到：
+## 📁 项目结构
 
-```json
-{
-  "status": "ok",
-  "api_key_configured": true,
-  "model": "glm-4.6"
-}
+```
+.
+├── server/              # 后端服务 (TypeScript/Express)
+│   ├── src/            # 源代码
+│   │   ├── api/        # API调用
+│   │   ├── config/     # 配置
+│   │   ├── middleware/ # 中间件
+│   │   ├── routes/     # 路由
+│   │   ├── types/      # 类型定义
+│   │   └── utils/      # 工具函数
+│   ├── .env            # 环境变量（需要创建）
+│   └── package.json
+├── components/          # React组件
+├── services/           # 前端服务
+├── assets/             # 静态资源
+└── package.json         # 前端依赖和统一启动脚本
 ```
 
-### 检查前端连接
+## 🛠️ 可用命令
 
-打开浏览器开发者工具（F12），查看控制台是否有错误。如果看到 "API错误" 或连接失败，请检查：
+### 统一启动（推荐）
+- `npm run dev` - 同时启动前后端开发服务器
+- `npm start` - 同时启动前后端生产服务器
+- `npm run build` - 构建前后端
 
-1. 后端服务是否正在运行
-2. API密钥是否正确配置
-3. CORS配置是否正确
+### 单独启动
+- `npm run dev:frontend` - 仅启动前端
+- `npm run dev:backend` - 仅启动后端
+- `npm run build:frontend` - 仅构建前端
+- `npm run build:backend` - 仅构建后端
 
-## 常见问题
+## 📚 文档
 
-### 后端启动失败
+- [快速启动指南](./START.md) - 详细的启动说明
+- [API Key配置](./API_KEY_CONFIG.md) - API密钥配置指南
+- [功能说明](./FEATURES.md) - 项目功能列表
+- [部署指南](./DEPLOYMENT.md) - 部署到生产环境
+- [Cloudflare部署](./CLOUDFLARE_DEPLOY.md) - Cloudflare Pages部署
 
-**错误：** `ModuleNotFoundError`
+## 🔧 技术栈
 
-**解决：**
-```bash
-pip install -r requirements.txt
+### 前端
+- React 19
+- TypeScript
+- Vite
+- Framer Motion
+
+### 后端
+- Node.js
+- Express
+- TypeScript
+- Axios
+
+### API
+- ChatGLM API (智谱AI)
+
+## 📝 环境变量
+
+后端环境变量（`server/.env`）：
+```env
+CHATGLM_API_KEY=your_api_key_here
+CHATGLM_MODEL=glm-4.5-airx
+HOST=0.0.0.0
+PORT=8000
+ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 ```
 
-### API密钥错误
+## ✅ 验证
 
-**错误：** `ChatGLM API Key未配置`
+启动后访问：
+- 前端：http://localhost:3000
+- 后端健康检查：http://localhost:8000/api/health
+- 后端API信息：http://localhost:8000/
 
-**解决：**
-1. 检查 `backend/.env` 文件是否存在
-2. 确认 `CHATGLM_API_KEY` 已正确设置（没有多余的空格）
-3. 重启后端服务
+## 📄 许可证
 
-### 前端无法连接后端
-
-**错误：** `Failed to fetch` 或 CORS 错误
-
-**解决：**
-1. 确认后端运行在 `http://localhost:8000`
-2. 检查浏览器控制台的错误信息
-3. 如果使用不同端口，修改 `backend/main.py` 中的 CORS 配置
-
-## 下一步
-
-- 查看 [MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md) 了解详细的迁移说明
-- 查看 [backend/README.md](./backend/README.md) 了解后端API详情
+MIT
