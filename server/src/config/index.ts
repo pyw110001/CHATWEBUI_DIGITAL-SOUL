@@ -88,7 +88,8 @@ export const config = {
   // 服务器配置
   server: {
     host: process.env.HOST || '0.0.0.0',
-    port: parseInt(process.env.PORT || '8000', 10),
+    // 支持 Vercel 和 Cloud Run 的 PORT 环境变量
+    port: parseInt(process.env.PORT || process.env.VERCEL_PORT || '8000', 10),
   },
   
   // API超时配置（毫秒）

@@ -1,0 +1,30 @@
+runtime: nodejs20
+
+# 环境变量（在生产环境中通过 Secret Manager 或环境变量设置）
+# 不要在这里硬编码敏感信息
+env_variables:
+  CHATGLM_MODEL: glm-4.5-airx
+  PORT: 8080
+  NODE_ENV: production
+
+# 自动扩缩容配置
+automatic_scaling:
+  min_instances: 0
+  max_instances: 10
+  target_cpu_utilization: 0.6
+
+# 健康检查
+readiness_check:
+  path: /api/health
+  check_interval_sec: 5
+  timeout_sec: 4
+  failure_threshold: 2
+  success_threshold: 2
+
+liveness_check:
+  path: /api/health
+  check_interval_sec: 30
+  timeout_sec: 4
+  failure_threshold: 4
+  success_threshold: 2
+
