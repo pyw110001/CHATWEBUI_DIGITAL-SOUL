@@ -160,8 +160,12 @@ const MultiAgentChatPage: React.FC<MultiAgentChatPageProps> = ({ agents, onBack 
         ? userMessage
         : `请基于其他智能体的发言进行互动（追问细节、补充观点、提出不同意见等），控制在1-3句话。${shouldRefocus ? '注意：对话可能偏离了用户原问题，请主动将话题拉回主题。' : ''}`;
 
+      // 获取 API 基础 URL（生产环境使用相对路径，开发环境使用 localhost）
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 
+        (import.meta.env.PROD ? '' : 'http://localhost:8000');
+      
       // 调用API，使用增强的系统提示
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'}/api/chat/stream`, {
+      const response = await fetch(`${apiBaseUrl}/api/chat/stream`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

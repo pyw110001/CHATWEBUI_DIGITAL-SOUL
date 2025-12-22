@@ -6,7 +6,17 @@
 import { Message, Agent } from '../types';
 
 // 后端API地址
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+// 生产环境：使用相对路径（Vercel 上前后端同域）
+// 开发环境：使用 localhost:8000
+function getApiBaseUrl(): string {
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+  // 生产环境使用相对路径，开发环境使用 localhost
+  return import.meta.env.PROD ? '' : 'http://localhost:8000';
+}
+
+const API_BASE_URL = getApiBaseUrl();
 
 // 聊天会话接口（用于兼容原有代码结构）
 export interface ChatSession {

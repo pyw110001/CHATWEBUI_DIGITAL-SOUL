@@ -81,8 +81,8 @@ export const config = {
   // CORS配置
   cors: {
     allowedOrigins: getAllowedOrigins(),
-    // Cloudflare Pages 域名正则
-    allowedOriginRegex: /^https:\/\/.*\.(pages\.dev|cloudflarepages\.app)$/,
+    // Vercel 和 Cloudflare Pages 域名正则
+    allowedOriginRegex: /^https:\/\/.*\.(vercel\.app|pages\.dev|cloudflarepages\.app)$/,
   },
   
   // 服务器配置
