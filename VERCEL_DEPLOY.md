@@ -28,26 +28,33 @@
    **Root Directory**: 留空（项目根目录）
    
    **Build Settings**:
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
-   - **Install Command**: `npm install`
+   - **Build Command**: `npm run build`（会自动构建前后端）
+   - **Output Directory**: `dist`（前端构建输出）
+   - **Install Command**: `npm install && cd server && npm install`（安装前后端依赖）
+   
+   > **注意**：如果 `vercel.json` 已配置 `installCommand`，Vercel 会自动使用该配置，无需在 Dashboard 中设置。
 
 5. **配置环境变量**
    
-   在项目设置中添加以下环境变量：
+   在项目设置 → **Environment Variables** 中添加以下环境变量：
    
-   **后端环境变量**（在 Vercel Dashboard 的 Environment Variables 中设置）：
+   **必需的环境变量**：
    ```
    CHATGLM_API_KEY=your_api_key_here
-   CHATGLM_MODEL=glm-4.5-airx
-   PORT=3000
-   ALLOWED_ORIGINS=https://your-project.vercel.app
    ```
+   > ⚠️ **重要**：这是唯一必需的环境变量。请从 [智谱AI开放平台](https://bigmodel.cn/usercenter/proj-mgmt/apikeys) 获取你的 API Key。
    
-   **前端环境变量**（如果需要）：
+   **可选的环境变量**：
    ```
-   VITE_API_BASE_URL=https://your-project.vercel.app
+   CHATGLM_MODEL=glm-4.5-airx
    ```
+   > 默认值已经是 `glm-4.5-airx`，通常不需要设置。
+   
+   **不需要设置的环境变量**：
+   - ❌ `PORT` - Vercel 会自动设置，无需手动配置
+   - ❌ `ALLOWED_ORIGINS` - 在 Vercel 上前后端同域，不需要 CORS 配置
+   - ❌ `VITE_API_BASE_URL` - 前端会自动使用相对路径 `/api/...`，无需设置
+   - ❌ `NODE_ENV` - Vercel 会自动设置为 `production`
 
 6. **部署**
    - 点击 "Deploy"
@@ -79,42 +86,53 @@ vercel --prod
 ```json
 {
   "version": 2,
+  "installCommand": "npm install && cd server && npm install",
   "builds": [
-    {
-      "src": "server/package.json",
-      "use": "@vercel/node"
-    },
     {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist"
       }
+    },
+    {
+      "src": "server/api/index.ts",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "server/src/index.ts"
+      "dest": "/server/api/index.ts"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|ico|png|jpg|jpeg|svg|gif|woff|woff2|ttf|eot))",
+      "dest": "/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/$1"
+      "dest": "/index.html"
     }
   ]
 }
 ```
 
 **说明**：
-- `/api/*` 路由会被转发到 Express 后端
-- 其他路由会提供前端静态文件
+- `installCommand`：自动安装前后端依赖
+- `/api/*` 路由会被转发到 Express 后端（`server/api/index.ts`）
+- 静态资源（`/assets/*`、`.js`、`.css` 等）直接提供
+- 其他路由（SPA 路由）都指向 `index.html`
 - Vercel 会自动将 Express 应用转换为 Serverless Functions
 
-## 🔧 后端适配（如果需要）
+## 🔧 后端适配说明
 
-如果遇到问题，可能需要修改后端入口文件以适配 Vercel：
+项目已经配置好 Vercel Serverless Functions 适配：
 
-创建 `server/api/index.ts`（Vercel Serverless 入口）：
+**入口文件**：`server/api/index.ts`
 
 ```typescript
 import { createApp } from '../src/index.js';
@@ -124,32 +142,24 @@ const app = createApp();
 export default app;
 ```
 
-然后修改 `vercel.json`：
-
-```json
-{
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "server/api/index.ts"
-    }
-  ]
-}
-```
+这个文件将 Express 应用导出为 Vercel Serverless Function，无需额外配置。
 
 ## 📝 注意事项
 
 1. **API 路由**
    - 后端 API 路径：`https://your-project.vercel.app/api/chat/stream`
-   - 前端需要配置 API 基础 URL
+   - 前端自动使用相对路径 `/api/...`，无需配置 `VITE_API_BASE_URL`
+   - 在 Vercel 上，前后端同域，无需 CORS 配置
 
 2. **环境变量**
-   - 敏感信息（如 API Key）必须在 Vercel Dashboard 中配置
-   - 不要将 `.env` 文件提交到 Git
+   - ⚠️ **必需**：`CHATGLM_API_KEY` - 必须在 Vercel Dashboard 中配置
+   - ✅ **可选**：`CHATGLM_MODEL` - 默认值为 `glm-4.5-airx`
+   - ❌ **不需要**：`PORT`、`ALLOWED_ORIGINS`、`VITE_API_BASE_URL`、`NODE_ENV`
+   - 敏感信息（如 API Key）必须在 Vercel Dashboard 中配置，不要将 `.env` 文件提交到 Git
 
 3. **CORS 配置**
-   - 确保 `ALLOWED_ORIGINS` 包含你的 Vercel 域名
-   - 格式：`https://your-project.vercel.app`
+   - 在 Vercel 上，前后端部署在同一域名下，**不需要配置 CORS**
+   - 如果遇到 CORS 错误，检查后端代码中的 CORS 中间件配置
 
 4. **构建时间限制**
    - Vercel 免费版构建时间限制为 45 分钟
@@ -174,14 +184,25 @@ export default app;
 ### 问题 1：API 路由 404
 
 **解决方案**：
-- 检查 `vercel.json` 中的路由配置
-- 确保后端代码在 `server/src/index.ts`
+- 检查 `vercel.json` 中的路由配置，确保 `/api/(.*)` 指向 `server/api/index.ts`
+- 确保 `server/api/index.ts` 文件存在并正确导出 Express 应用
+- 检查构建日志，确认后端构建成功
 
 ### 问题 2：环境变量未生效
 
 **解决方案**：
-- 在 Vercel Dashboard 中重新设置环境变量
-- 重新部署项目
+- 在 Vercel Dashboard → Settings → Environment Variables 中设置
+- 确保环境变量应用于 **Production**、**Preview** 和 **Development** 环境
+- 设置后需要重新部署项目才能生效
+- 检查环境变量名称是否正确：`CHATGLM_API_KEY`（不是 `ZHIPU_API_KEY`，虽然代码也支持）
+
+### 问题 4：前端无法连接后端 API
+
+**解决方案**：
+- 检查浏览器控制台，确认 API 请求路径是否为相对路径 `/api/...`
+- 如果显示 `localhost:8000`，说明前端仍在使用开发环境配置
+- 确保没有设置 `VITE_API_BASE_URL` 环境变量（应该使用相对路径）
+- 检查 Vercel 部署日志，确认前后端都构建成功
 
 ### 问题 3：流式响应超时
 
