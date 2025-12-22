@@ -6,8 +6,6 @@
 import { Message, Agent } from '../types';
 
 // 后端API地址
-// 生产环境：使用相对路径（Vercel 上前后端同域）
-// 开发环境：使用 localhost:8000
 function getApiBaseUrl(): string {
   if (import.meta.env.VITE_API_BASE_URL) {
     return import.meta.env.VITE_API_BASE_URL;
